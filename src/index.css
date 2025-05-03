@@ -91,3 +91,33 @@
     @apply bg-hard/20 text-hard-hover border border-hard/30 font-medium;
   }
 }
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-in-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

@@ -78,24 +78,35 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col px-4 py-8 md:px-8 lg:px-12">
-      <header className="flex justify-between items-center mb-12">
-        <div>
+      <header className={`flex justify-between items-center ${searched ? "mb-4" : "mb-0"} transition-all duration-300`}>
+        <div className={searched ? "block" : "hidden"}>
           <h1 className="text-3xl font-bold font-mono">LeetCode Query Craft</h1>
           <p className="text-muted-foreground">Find the perfect LeetCode problems with natural language</p>
         </div>
         <ThemeToggle />
       </header>
 
-      <main className="flex-grow flex flex-col items-center">
-        <SearchBar onSearch={handleSearch} />
+      <main className={`flex-grow flex flex-col ${!searched ? "justify-center" : ""}`}>
+        <div className={`transition-all duration-300 ${searched ? "mt-0" : "mt-0"}`}>
+          <SearchBar onSearch={handleSearch} hasSearched={searched} />
+        </div>
         
-        {results.length > 0 ? (
-          <ResultsDisplay results={results} loading={loading} />
-        ) : (
-          !loading && <EmptyState searched={searched} />
+        {!searched && (
+          <div className="text-center mb-10 animate-fade-in">
+            <h1 className="text-3xl font-bold font-mono mb-2">LeetCode Query Craft</h1>
+            <p className="text-muted-foreground">Find the perfect LeetCode problems with natural language</p>
+          </div>
         )}
         
-        {loading && <ResultsDisplay results={[]} loading={true} />}
+        <div className={`mt-4 transition-all duration-300 ${searched ? "opacity-100" : "opacity-0"}`}>
+          {results.length > 0 ? (
+            <ResultsDisplay results={results} loading={loading} />
+          ) : (
+            !loading && searched && <EmptyState searched={searched} />
+          )}
+          
+          {loading && <ResultsDisplay results={[]} loading={true} />}
+        </div>
       </main>
 
       <footer className="mt-12 text-center text-sm text-muted-foreground">

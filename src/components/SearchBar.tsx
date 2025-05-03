@@ -4,19 +4,29 @@ import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { Info, Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface SearchBarProps {
   onSearch: (query: string, count: number) => void;
+  hasSearched: boolean;
 }
 
 const MAX_RESULTS = 20;
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
   const [query, setQuery] = useState("");
   const [count, setCount] = useState(5);
   const [countError, setCountError] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (hasSearched) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => setIsTransitioning(false), 300); // Match transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [hasSearched]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +55,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     setCountError(value > MAX_RESULTS);
   };
 
+  // Dynamic classes based on search state
+  const containerClasses = `w-full max-w-3xl mx-auto transition-all duration-300 ease-in-out ${
+    hasSearched 
+      ? "py-4 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b"
+      : "py-0"
+  }`;
+
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className={containerClasses}>
+      <form onSubmit={handleSubmit} className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}>
         <div className="flex items-center relative">
           <Input
             type="text"
