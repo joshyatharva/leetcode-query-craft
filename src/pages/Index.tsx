@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { LeetCodeQuestion } from "@/types";
 import SearchBar from "@/components/SearchBar";
@@ -78,27 +77,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col px-4 py-8 md:px-8 lg:px-12">
-      <header className={`flex justify-between items-center ${searched ? "mb-4" : "mb-0"} transition-all duration-300`}>
-        <div className={searched ? "block" : "hidden"}>
-          <h1 className="text-3xl font-bold font-mono">LeetCode Query Craft</h1>
-          <p className="text-muted-foreground">Find the perfect LeetCode problems with natural language</p>
+      <header className="flex justify-between items-center mb-2">
+        <div className="invisible">
+          <ThemeToggle />
         </div>
         <ThemeToggle />
       </header>
 
       <main className={`flex-grow flex flex-col ${!searched ? "justify-center" : ""}`}>
-        <div className={`transition-all duration-300 ${searched ? "mt-0" : "mt-0"}`}>
+        <div className={`text-center transition-all duration-500 ease-in-out animate-fade-in mb-8 ${searched ? "scale-90 -translate-y-2" : "scale-100"}`}>
+          <h1 className="text-3xl font-bold font-mono mb-2">LeetCode Query Craft</h1>
+          <p className="text-muted-foreground">Find the perfect LeetCode problems with natural language</p>
+        </div>
+        
+        <div className={`transition-all duration-300 ease-in-out ${searched ? "mt-0" : "mt-4"}`}>
           <SearchBar onSearch={handleSearch} hasSearched={searched} />
         </div>
         
-        {!searched && (
-          <div className="text-center mb-10 animate-fade-in">
-            <h1 className="text-3xl font-bold font-mono mb-2">LeetCode Query Craft</h1>
-            <p className="text-muted-foreground">Find the perfect LeetCode problems with natural language</p>
-          </div>
-        )}
-        
-        <div className={`mt-4 transition-all duration-300 ${searched ? "opacity-100" : "opacity-0"}`}>
+        <div className={`mt-8 transition-all duration-300 ${searched ? "opacity-100" : "opacity-0"}`}>
           {results.length > 0 ? (
             <ResultsDisplay results={results} loading={loading} />
           ) : (

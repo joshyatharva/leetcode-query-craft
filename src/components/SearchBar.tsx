@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import { Info, Search } from "lucide-react";
+import { Hash, Search } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 interface SearchBarProps {
@@ -65,58 +65,54 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
   return (
     <div className={containerClasses}>
       <form onSubmit={handleSubmit} className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}>
-        <div className="flex items-center relative">
-          <Input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for problems (e.g. 'binary tree level order traversal')..."
-            className="pr-10 font-mono shadow-sm"
-            autoFocus
-          />
-          <Button 
-            type="submit" 
-            size="icon" 
-            className="absolute right-0 rounded-l-none"
-            disabled={!query.trim() || countError}
-          >
-            <Search size={18} />
-          </Button>
-        </div>
+        <div className="flex items-center gap-2">
+          <div className="relative flex-grow">
+            <Input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search for problems (e.g. 'binary tree level order traversal')..."
+              className="pr-10 font-mono shadow-sm"
+              autoFocus
+            />
+            <Button 
+              type="submit" 
+              size="icon" 
+              className="absolute right-0 top-0 rounded-l-none h-full"
+              disabled={!query.trim() || countError}
+            >
+              <Search size={18} />
+            </Button>
+          </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <label htmlFor="count" className="text-sm font-medium whitespace-nowrap">
-              Number of questions:
-            </label>
-            <div className="relative">
-              <Input
-                id="count"
-                type="number"
-                min={1}
-                max={MAX_RESULTS}
-                value={count}
-                onChange={handleCountChange}
-                className={`w-16 h-8 text-center px-2 ${countError ? 'border-red-500' : ''}`}
-              />
-              {countError && (
-                <p className="absolute text-red-500 text-xs mt-0.5">
-                  Max: {MAX_RESULTS}
-                </p>
-              )}
-            </div>
-
+          <div className="flex items-center">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Info size={16} />
-                  </Button>
+                  <div className="flex items-center gap-1.5">
+                    <Hash size={18} className="text-muted-foreground" />
+                    <div className="relative">
+                      <Input
+                        id="count"
+                        type="number"
+                        min={1}
+                        max={MAX_RESULTS}
+                        value={count}
+                        onChange={handleCountChange}
+                        className={`w-14 h-9 text-center px-2 ${countError ? 'border-red-500' : ''}`}
+                        aria-label="Number of questions"
+                      />
+                      {countError && (
+                        <p className="absolute text-red-500 text-xs mt-0.5">
+                          Max: {MAX_RESULTS}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="max-w-xs">
-                    Enter a natural language query to find matching LeetCode problems. 
-                    For example: "easy tree problems with recursion" or "medium difficulty array problems involving binary search".
+                    Number of questions to display (max: {MAX_RESULTS})
                   </p>
                 </TooltipContent>
               </Tooltip>
