@@ -1,7 +1,11 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Settings } from "lucide-react";
 import React, { useState, useEffect } from "react";
@@ -32,12 +36,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!query.trim()) {
       toast({
         title: "Empty Query",
         description: "Please enter a search query",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -47,18 +51,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
 
   // Dynamic classes based on search state
   const containerClasses = `w-full max-w-3xl mx-auto transition-all duration-300 ease-in-out ${
-    hasSearched 
+    hasSearched
       ? "py-4 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b"
       : "py-0"
   }`;
 
   return (
     <div className={containerClasses}>
-      <div className="flex justify-end mb-2">
+      {/* <div className="flex justify-end mb-2">
         <SignInButton />
-      </div>
-      
-      <form onSubmit={handleSubmit} className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}>
+      </div> */}
+
+      <form
+        onSubmit={handleSubmit}
+        className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}
+      >
         <div className="flex items-center gap-2">
           <div className="relative flex-grow">
             <Input
@@ -69,9 +76,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
               className="pr-10 font-mono shadow-sm"
               autoFocus
             />
-            <Button 
-              type="submit" 
-              size="icon" 
+            <Button
+              type="submit"
+              size="icon"
               className="absolute right-0 top-0 rounded-l-none h-full"
               disabled={!query.trim()}
             >
@@ -82,9 +89,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
-                  type="button" 
-                  variant="ghost" 
+                <Button
+                  type="button"
+                  variant="ghost"
                   size="icon"
                   onClick={() => setSettingsOpen(true)}
                   className="text-muted-foreground hover:text-foreground"
@@ -100,10 +107,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
         </div>
       </form>
 
-      <SettingsModal 
-        open={settingsOpen}
-        onOpenChange={setSettingsOpen}
-      />
+      <SettingsModal open={settingsOpen} onOpenChange={setSettingsOpen} />
     </div>
   );
 };

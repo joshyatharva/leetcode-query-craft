@@ -1,16 +1,15 @@
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
-import SignInModal from "./SignInModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { LogOut, User } from "lucide-react";
+import { useState } from "react";
+import SignInModal from "./SignInModal";
 
 export const SignInButton = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);

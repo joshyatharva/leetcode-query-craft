@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,6 +7,34 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+
+interface TooltipCustomProps {
+  content: string;
+  children?: React.ReactNode;
+}
+
+const TooltipCustom = ({ content, children }: TooltipCustomProps) => {
+  console.log({ children });
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div>{children}</div>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-xs">
+          <p>{content}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 interface SignInModalProps {
   open: boolean;
@@ -41,7 +68,7 @@ const SignInModal = ({ open, onOpenChange }: SignInModalProps) => {
             Sign in to save your settings and preferences
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="flex flex-col gap-4 py-4">
           <Button
             variant="outline"
@@ -68,32 +95,37 @@ const SignInModal = ({ open, onOpenChange }: SignInModalProps) => {
             </svg>
             Sign in with Google
           </Button>
-          
-          <Button
-            variant="outline"
-            onClick={handleSignInWithMicrosoft}
-            className="flex items-center gap-2 w-full justify-center"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 23 23">
-              <path fill="#f3f3f3" d="M0 0h23v23H0z" />
-              <path fill="#f35325" d="M1 1h10v10H1z" />
-              <path fill="#81bc06" d="M12 1h10v10H12z" />
-              <path fill="#05a6f0" d="M1 12h10v10H1z" />
-              <path fill="#ffba08" d="M12 12h10v10H12z" />
-            </svg>
-            Sign in with Microsoft
-          </Button>
-          
-          <Button
-            variant="outline"
-            onClick={handleSignInWithApple}
-            className="flex items-center gap-2 w-full justify-center"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2a9.91 9.91 0 0 1 3 .46 5.37 5.37 0 0 1 2.54 2.1 5.24 5.24 0 0 1 .8 2.81 5.92 5.92 0 0 1-1.14 3.31 6.25 6.25 0 0 1-2.66 2.1c-.1.05-.11.1-.01.14a6.32 6.32 0 0 1 2.74 2.36A6.25 6.25 0 0 1 18 17.28a5.74 5.74 0 0 1-.77 2.85 5.9 5.9 0 0 1-2 2.07A9.13 9.13 0 0 1 12 23a8.72 8.72 0 0 1-3.15-.58 10.2 10.2 0 0 1-4.64-3.34 9 9 0 0 1-2-5.62A8.89 8.89 0 0 1 4.37 7.3 9.18 9.18 0 0 1 12 2z"/>
-            </svg>
-            Sign in with Apple
-          </Button>
+
+          <TooltipCustom content="Coming soon!">
+            <Button
+              variant="outline"
+              onClick={handleSignInWithMicrosoft}
+              className="flex items-center gap-2 w-full justify-center"
+              disabled
+            >
+              <svg className="h-5 w-5" viewBox="0 0 23 23">
+                <path fill="#f3f3f3" d="M0 0h23v23H0z" />
+                <path fill="#f35325" d="M1 1h10v10H1z" />
+                <path fill="#81bc06" d="M12 1h10v10H12z" />
+                <path fill="#05a6f0" d="M1 12h10v10H1z" />
+                <path fill="#ffba08" d="M12 12h10v10H12z" />
+              </svg>
+              Sign in with Microsoft
+            </Button>
+          </TooltipCustom>
+          <TooltipCustom content="Coming soon!">
+            <Button
+              variant="outline"
+              onClick={handleSignInWithApple}
+              className="flex items-center gap-2 w-full justify-center"
+              disabled
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2a9.91 9.91 0 0 1 3 .46 5.37 5.37 0 0 1 2.54 2.1 5.24 5.24 0 0 1 .8 2.81 5.92 5.92 0 0 1-1.14 3.31 6.25 6.25 0 0 1-2.66 2.1c-.1.05-.11.1-.01.14a6.32 6.32 0 0 1 2.74 2.36A6.25 6.25 0 0 1 18 17.28a5.74 5.74 0 0 1-.77 2.85 5.9 5.9 0 0 1-2 2.07A9.13 9.13 0 0 1 12 23a8.72 8.72 0 0 1-3.15-.58 10.2 10.2 0 0 1-4.64-3.34 9 9 0 0 1-2-5.62A8.89 8.89 0 0 1 4.37 7.3 9.18 9.18 0 0 1 12 2z" />
+              </svg>
+              Sign in with Apple
+            </Button>
+          </TooltipCustom>
         </div>
       </DialogContent>
     </Dialog>
