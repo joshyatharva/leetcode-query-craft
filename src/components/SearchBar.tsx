@@ -3,24 +3,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import { Hash, Search, Settings } from "lucide-react";
+import { Search, Settings } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import SettingsModal from "./SettingsModal";
+import { SignInButton } from "./SignInButton";
 
 interface SearchBarProps {
   onSearch: (query: string, count: number) => void;
   hasSearched: boolean;
 }
 
-const MAX_RESULTS = 20;
-
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
   const [query, setQuery] = useState("");
-  const [count, setCount] = useState(5);
-  const [countError, setCountError] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { toast } = useToast();
+
+  // Get max questions from localStorage
+  const maxQuestions = Number(localStorage.getItem("max-questions") || "20");
 
   useEffect(() => {
     if (hasSearched) {
@@ -42,19 +42,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
       return;
     }
 
-    if (count > MAX_RESULTS) {
-      setCountError(true);
-      return;
-    }
-
-    setCountError(false);
-    onSearch(query, count);
-  };
-
-  const handleCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setCount(isNaN(value) ? 0 : value);
-    setCountError(value > MAX_RESULTS);
+    onSearch(query, maxQuestions);
   };
 
   // Dynamic classes based on search state
@@ -66,6 +54,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
 
   return (
     <div className={containerClasses}>
+      <div className="flex justify-end mb-2">
+        <SignInButton />
+      </div>
+      
       <form onSubmit={handleSubmit} className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}>
         <div className="flex items-center gap-2">
           <div className="relative flex-grow">
@@ -81,44 +73,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
               type="submit" 
               size="icon" 
               className="absolute right-0 top-0 rounded-l-none h-full"
-              disabled={!query.trim() || countError}
+              disabled={!query.trim()}
             >
               <Search size={18} />
             </Button>
-          </div>
-
-          <div className="flex items-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center gap-1.5">
-                    <Hash size={18} className="text-muted-foreground" />
-                    <div className="relative">
-                      <Input
-                        id="count"
-                        type="number"
-                        min={1}
-                        max={MAX_RESULTS}
-                        value={count}
-                        onChange={handleCountChange}
-                        className={`w-14 h-9 text-center px-2 ${countError ? 'border-red-500' : ''}`}
-                        aria-label="Number of questions"
-                      />
-                      {countError && (
-                        <p className="absolute text-red-500 text-xs mt-0.5">
-                          Max: {MAX_RESULTS}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="max-w-xs">
-                    Number of questions to display (max: {MAX_RESULTS})
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
           </div>
 
           <TooltipProvider>
