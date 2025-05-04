@@ -10,6 +10,7 @@ import {
   OAuthProvider,
   User
 } from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
 
 // Firebase config
 const firebaseConfig = {
@@ -56,6 +57,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const { auth } = initializeFirebase();
@@ -75,6 +77,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google:", error);
+      toast({
+        title: "Sign in failed",
+        description: "Could not sign in with Google",
+        variant: "destructive"
+      });
     }
   };
 
@@ -85,6 +92,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Microsoft:", error);
+      toast({
+        title: "Sign in failed",
+        description: "Could not sign in with Microsoft",
+        variant: "destructive"
+      });
     }
   };
 
@@ -95,6 +107,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Apple:", error);
+      toast({
+        title: "Sign in failed",
+        description: "Could not sign in with Apple",
+        variant: "destructive"
+      });
     }
   };
 
@@ -104,6 +121,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await firebaseSignOut(auth);
     } catch (error) {
       console.error("Error signing out:", error);
+      toast({
+        title: "Sign out failed",
+        description: "Could not sign out",
+        variant: "destructive"
+      });
     }
   };
 

@@ -10,10 +10,20 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export const SignInButton = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out successfully",
+      description: "You have been signed out of your account",
+    });
+  };
 
   if (user) {
     return (
@@ -25,7 +35,7 @@ export const SignInButton = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="h-4 w-4 mr-2" />
             Sign out
           </DropdownMenuItem>
@@ -46,7 +56,15 @@ export const SignInButton = () => {
 
       <SignInModal
         open={showSignInModal}
-        onOpenChange={setShowSignInModal}
+        onOpenChange={(open) => {
+          setShowSignInModal(open);
+          if (!open && user) {
+            toast({
+              title: "Signed in successfully",
+              description: `Welcome ${user.displayName || user.email}!`,
+            });
+          }
+        }}
       />
     </>
   );
