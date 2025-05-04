@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { LeetCodeQuestion } from "@/types";
 import SearchBar from "@/components/SearchBar";
 import ResultsDisplay from "@/components/ResultsDisplay";
@@ -53,6 +54,15 @@ const Index = () => {
   const [results, setResults] = useState<LeetCodeQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [maxResults, setMaxResults] = useState(20);
+
+  useEffect(() => {
+    // Load maxResults from localStorage if available
+    const savedMaxResults = localStorage.getItem("max-questions");
+    if (savedMaxResults) {
+      setMaxResults(parseInt(savedMaxResults, 10));
+    }
+  }, []);
 
   const handleSearch = async (query: string, count: number) => {
     setLoading(true);

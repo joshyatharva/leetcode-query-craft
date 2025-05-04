@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import { Hash, Search } from "lucide-react";
+import { Hash, Search, Settings } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import SettingsModal from "./SettingsModal";
 
 interface SearchBarProps {
   onSearch: (query: string, count: number) => void;
@@ -18,6 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
   const [count, setCount] = useState(5);
   const [countError, setCountError] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -118,8 +120,32 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
               </Tooltip>
             </TooltipProvider>
           </div>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setSettingsOpen(true)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <Settings size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Settings</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </form>
+
+      <SettingsModal 
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+      />
     </div>
   );
 };
