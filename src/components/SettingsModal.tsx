@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -11,7 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Info } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 
 interface SettingsModalProps {
@@ -20,8 +24,12 @@ interface SettingsModalProps {
 }
 
 const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
-  const [openAIKey, setOpenAIKey] = useState(() => localStorage.getItem("openai-key") || "");
-  const [maxQuestions, setMaxQuestions] = useState(() => localStorage.getItem("max-questions") || "20");
+  const [openAIKey, setOpenAIKey] = useState(
+    () => localStorage.getItem("openai-key") || ""
+  );
+  const [maxQuestions, setMaxQuestions] = useState(
+    () => localStorage.getItem("max-questions") || "20"
+  );
   const { toast } = useToast();
 
   const handleSave = () => {
@@ -46,7 +54,7 @@ const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
             Configure your LeetCode Query Craft settings
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -57,7 +65,9 @@ const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                     <Info className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>OpenAI Key should support gpt-4o and embedding generation</p>
+                    <p>
+                      OpenAI Key should support gpt-4o and embedding generation
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

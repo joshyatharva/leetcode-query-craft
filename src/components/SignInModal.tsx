@@ -21,7 +21,6 @@ interface TooltipCustomProps {
 }
 
 const TooltipCustom = ({ content, children }: TooltipCustomProps) => {
-  console.log({ children });
   return (
     <TooltipProvider>
       <Tooltip>

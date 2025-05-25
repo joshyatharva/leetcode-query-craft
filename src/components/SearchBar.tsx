@@ -8,9 +8,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Settings } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SettingsModal from "./SettingsModal";
-import { SignInButton } from "./SignInButton";
 
 interface SearchBarProps {
   onSearch: (query: string, count: number) => void;
@@ -58,10 +57,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, hasSearched }) => {
 
   return (
     <div className={containerClasses}>
-      {/* <div className="flex justify-end mb-2">
-        <SignInButton />
-      </div> */}
-
       <form
         onSubmit={handleSubmit}
         className={`space-y-4 ${hasSearched ? "animate-fade-in" : ""}`}
